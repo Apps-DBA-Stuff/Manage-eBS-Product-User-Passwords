@@ -1,10 +1,11 @@
 # Manage-eBS-Product-User-Passwords
 
-The repository contains of 
-pwdgen                         # Shellscript to generate passwords for different accounts, can be from 12 to 64 characters containing capital letters and digits 0-9
-products.txt                   # Contains all the product users in eBS R12
-change_product_pwds.sh         # Shellscript used to change the password for all eBS product accounts, calling pwdgen to create passwords.
-set_default_product_pwds.sh    # Shell script resetting the password for all eBS product accounts to default if needed.
+The repository contains of 4 files.
+1. pwdgen                         # Shellscript to generate passwords for different accounts, can be from 12 to 64 characters containing capital letters and digits 0-9
+2. products.txt                   # Contains all the product users in eBS R12
+3. change_product_pwds.sh         # Shellscript used to change the password for all eBS product accounts, calling pwdgen to create passwords.
+4. set_default_product_pwds.sh    # Shell script resetting the password for all eBS product accounts to default if needed.
+
 
 To run the script for eBS create a directory and place the files in the repo in the newly created directory. Source the eBS environment.
 1. run change_product_pwds.sh to set new passwords for all ebs Products users.
