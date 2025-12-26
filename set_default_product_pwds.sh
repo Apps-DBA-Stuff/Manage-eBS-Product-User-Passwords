@@ -165,7 +165,7 @@ unset system_connection_string
 unset apps_connection_string
 
 # Prompt user with Y as default
-read -p "Exection of FNDCPASS created log files. Delete Log Files? (Y/N) [Y]: " answer
+read -p "Execution of FNDCPASS created log files. Delete Log Files? (Y/N) [Y]: " answer
 
 # Set default to Y if user just presses Enter
 answer=${answer:-Y}
@@ -186,5 +186,6 @@ fi
 
 echo ""
 echo "Script is finished"
+
 
 
