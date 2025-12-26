@@ -10,7 +10,7 @@
 #| Can only be used to change product passwords, not SYSTEM or USER. Migth be an addon later on.
 #|
 #| Usage:
-#| ./set_default_product_pwds.sh
+#| . set_default_product_pwds.sh
 #|
 #| Change History:
 #|
@@ -171,9 +171,9 @@ read -p "Execution of FNDCPASS created log files. Delete Log Files? (Y/N) [Y]: "
 answer=${answer:-Y}
 
 # Convert to uppercase for comparison
-answer=$(echo "$answer" | tr '[:lower:]' '[:upper:]')
+answer=$(echo "${answer}" | tr '[:lower:]' '[:upper:]')
 
-if [ "$answer" = "Y" ]; then
+if [ "${answer}" == "Y" ]; then
     echo "Deleting FNDCPASS log files..."
 
     # Delete .log files
@@ -186,6 +186,7 @@ fi
 
 echo ""
 echo "Script is finished"
+
 
 
 
