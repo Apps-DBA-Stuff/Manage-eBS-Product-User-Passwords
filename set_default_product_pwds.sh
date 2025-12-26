@@ -132,7 +132,7 @@ do
                         FNDCPASS ${apps_connection_string} 0 Y ${system_connection_string} ORACLE ${username} ${NEWPWD} > /dev/null 2>&1
 
                         echo ""
-                        echo "Attempting to access the database as user ${username} with the new Passwordusing ${NEWPWD}."
+                        echo "Attempting to access the database as user ${username} with the default product password."
                         sqlplus -S -L "${product_connection_string}" << EOF > /dev/null 2>&1
                                 EXIT;
 EOF
@@ -165,3 +165,4 @@ unset apps_connection_string
 
 echo ""
 echo "Script is finished"
+
