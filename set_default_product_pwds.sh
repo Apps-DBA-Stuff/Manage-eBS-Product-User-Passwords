@@ -14,11 +14,12 @@
 #|
 #| Change History:
 #|
-#| 2025-10-02   0.1     Fredrik Lindkvist                         Creation
+#| 2025-10-02   0.1     Fredrik Lindkvist                    Creation
+#| 2025-12-26   0.2     Fredrik Lindkvist                    Management of logfiles created by FNDCPASS
 #+======================================================================================================================================
 #set -x
 
-PROGRAM_VERSION=0.1
+PROGRAM_VERSION=0.2
 
 SCRIPT_DIR="$( pwd )"                           # Location of the script
 DATE=$(date +"%Y-%m-%d_%H:%M:%S")               # Sysdate Variable
@@ -163,6 +164,27 @@ done < "$USERNAME_FILE"
 unset system_connection_string
 unset apps_connection_string
 
+# Prompt user with Y as default
+read -p "Exection of FNDCPASS created log files. Delete Log Files? (Y/N) [Y]: " answer
+
+# Set default to Y if user just presses Enter
+answer=${answer:-Y}
+
+# Convert to uppercase for comparison
+answer=$(echo "$answer" | tr '[:lower:]' '[:upper:]')
+
+if [ "$answer" = "Y" ]; then
+    echo "Deleting FNDCPASS log files..."
+
+    # Delete .log files
+    #rm -f ${SCRIPT_DIR}/L*.log
+
+    echo "Files deleted successfully."
+else
+    echo "Files not deleted."
+fi
+
 echo ""
 echo "Script is finished"
+
 
