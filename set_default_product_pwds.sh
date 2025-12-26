@@ -177,7 +177,7 @@ if [ "$answer" = "Y" ]; then
     echo "Deleting FNDCPASS log files..."
 
     # Delete .log files
-    #rm -f ${SCRIPT_DIR}/L*.log
+    rm -f ${SCRIPT_DIR}/L*.log
 
     echo "Files deleted successfully."
 else
@@ -186,6 +186,7 @@ fi
 
 echo ""
 echo "Script is finished"
+
 
 
 
