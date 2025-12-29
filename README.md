@@ -11,7 +11,8 @@ It should be possible to run AFPASSWD from both Midtier or DBtier but i have nev
 
 1. $ FNDCPASS apps/<apps_password>  0 Y system/<system_password> ALLORACLE <NEW PASSWORD>
 
--> Example with AFPASSWD : will prompt for new password and confirmation of new password.
+-> Example with AFPASSWD, will prompt for new password and confirmation of new password
+
 2. $ AFPASSWD -a 
 
 
