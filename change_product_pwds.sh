@@ -20,6 +20,7 @@
 #| 2025-10-02   0.1     Fredrik Lindkvist               Creation
 #| 2025-12-23   0.2     Fredrik Lindkvist               Prompt for apps/system passwords instead of giving them as inparameters
 #| 2025-12-26   0.3		Fredrik Lindkvist				Adding some housekeeping.
+#| 2026-01-15   0.4     Fredrik Lindkvist               Adding information about logfile and logdirectory
 #+===============================================================================================================================================
 #set -x
 
@@ -27,8 +28,8 @@ PROGRAM_VERSION=0.3
 
 SCRIPT_DIR="$( pwd )"                           # Where should the script be located = $SCRIPT_DIR
 DATE=$(date +"%Y-%m-%d_%H:%M:%S")               # Sysdate Variable
-LOG_DIR=${SCRIPT_DIR}/log                       # Log directory
-LOG_FILE="change_pwds_${DATE}.log"              # Log file Name
+LOG_DIR=${SCRIPT_DIR}/log                       # Log directory | Not used in this tool, only here from standard script template
+LOG_FILE="change_pwds_${DATE}.log"              # Log file Name | Not used in this tool, only here from standard script template
 SQL_FILE=${SCRIPT_DIR}/users.sql                # SQL file definition
 PRODUCT_NAMES_FILE=${SCRIPT_DIR}/products.txt   # List of all eBS Products
 INFO_FILE=${SCRIPT_DIR}/information.log         # Logfile storing new passwords temporarly
@@ -274,3 +275,4 @@ unset INFO_FILE
 
 echo ""
 echo "Script is finished"
+
