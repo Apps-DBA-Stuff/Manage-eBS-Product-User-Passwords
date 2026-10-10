@@ -1,14 +1,14 @@
 #!/bin/bash
-#+====================================================================================================================================
+#+=====================================================================================================================================================
 #| File Name:
 #| pwdgen
 #|
 #| Description:
 #| Deterministic password generator for Oracle EBS Product Users (AP, AR, GL, PO, WMS etc)
-#| Generates a 12-character password containing only uppercase letters (A-Z) # and numbers (0-9)
+#| Generates a password (default 12 characters) containing only uppercase letters (A-Z) and numbers (0-9)
 #|
 #| Usage:
-#| pwdgen [LENGTH] USERNAME
+#| pwdgen USERNAME [LENGTH]
 #|
 #| The password is deterministic and based on:
 #| - USERNAME (passed as argument)
@@ -18,8 +18,8 @@
 #| Change History:
 #| 2025-10-02   0.1     Fredrik Lindkvist               Creation
 #| 2025-10-30   0.2     Fredrik Lindkvist               Adding possibility to specify password length.
-#| 2025-10-10   0.3     Fredrik Lindkvist               Some improvements
-#+======================================================================================================================================
+#| 2026-10-10   0.3     Fredrik Lindkvist               USERNAME first, LENGTH second. Messages to stderr. Fixed lengths above 32 (hash was too short).
+#+=====================================================================================================================================================
 #set -x
 
 HOSTNAME=$(hostname)
@@ -33,59 +33,45 @@ else
     PROGRAM_NAME=$(basename -- "${0}")
 fi
 
-# Check if at least username is provided
+# Print usage to stderr
+usage() {
+    echo "Usage: ${PROGRAM_NAME} USERNAME [LENGTH]" >&2
+    echo "USERNAME: The User to create a password for." >&2
+    echo "LENGTH: The Length of the password to generate | optional : (minimum: 12, maximum: 64, default: 12)" >&2
+}
+
+# Check that username is provided
 if [ -z "$1" ]; then
-    echo "Error: Username is required"
-    echo "Usage: ${PROGRAM_NAME} [LENGTH] USERNAME"
-    echo "       ${PROGRAM_NAME} USERNAME"
-    echo "LENGTH: The Length of the password to generate | optional : (minimum: 12, maximum: 64, default: 12)"
-    echo "USERNAME: The User to create a password for."
+    echo "Error: Username is required" >&2
+    usage
     return 1 2>/dev/null || exit 1
 fi
 
-# Determine if first argument is a number (length) or username
-if [[ "$1" =~ ^[0-9]+$ ]]; then
-    # First argument is a number, so it's the length
-    PASSWORD_LENGTH="$1"
-    USERNAME="${2^^}"
-
-    if [ -z "$2" ]; then
-        echo "Error: Username is required"
-        echo "Usage: ${PROGRAM_NAME} [LENGTH] USERNAME"
-        return 1 2>/dev/null || exit 1
-    fi
-else
-    # First argument is not a number, so it's the username
-    PASSWORD_LENGTH=12
-    USERNAME="${1^^}"
-fi
-
-# Set password length (default to 12 if not provided or if $1 is not a number)
-#PASSWORD_LENGTH="${1:-12}"
-
+USERNAME="${1^^}"
+PASSWORD_LENGTH="${2:-12}"
 
 # Validate that PASSWORD_LENGTH is a positive integer
 if ! [[ "$PASSWORD_LENGTH" =~ ^[0-9]+$ ]] || [ "$PASSWORD_LENGTH" -lt 1 ]; then
-    echo "Error: Invalid password length. Must be a positive integer."
+    echo "Error: Invalid password length '${PASSWORD_LENGTH}'. Must be a positive integer." >&2
+    usage
     return 1 2>/dev/null || exit 1
 fi
 
 # Enforce minimum password length of 12
 if [ "$PASSWORD_LENGTH" -lt 12 ]; then
-    echo "Warning: Password length must be at least 12. Using 12."
+    echo "Warning: Password length must be at least 12. Using 12." >&2
     PASSWORD_LENGTH=12
 fi
 
 # Enforce maximum password length of 64
 if [ "$PASSWORD_LENGTH" -gt 64 ]; then
-    echo "Warning: Password length cannot exceed 64. Using 64."
+    echo "Warning: Password length cannot exceed 64. Using 64." >&2
     PASSWORD_LENGTH=64
 fi
 
-
 # Check if TWO_TASK is set
 if [ -z "$TWO_TASK" ]; then
-    echo "Error: TWO_TASK environment variable is not set"
+    echo "Error: TWO_TASK environment variable is not set" >&2
     return 1 2>/dev/null || exit 1
 fi
 
@@ -98,8 +84,16 @@ fi
 # Create a deterministic seed by concatenating the three components
 SEED="${NORMALIZED_USERNAME}:${TWO_TASK}:${HOSTNAME}"
 
-# Generate SHA256 hash of the seed
+# Generate SHA256 hash of the seed (64 hex chars = enough for 32 password chars)
 HASH=$(echo -n "$SEED" | sha256sum | awk '{print $1}')
+
+# Extend the hash for lengths above 32. The first block is unchanged,
+# so passwords of 32 characters or less are identical to earlier versions.
+BLOCK=1
+while [ ${#HASH} -lt $((PASSWORD_LENGTH * 2)) ]; do
+    HASH="${HASH}$(echo -n "${SEED}:${BLOCK}" | sha256sum | awk '{print $1}')"
+    BLOCK=$((BLOCK + 1))
+done
 
 # Convert hash to uppercase alphanumeric (A-Z, 0-9)
 PASSWORD=""
