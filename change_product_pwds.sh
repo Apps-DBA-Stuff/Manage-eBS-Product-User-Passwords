@@ -1,7 +1,5 @@
 #!/bin/bash
-#|
 #+===============================================================================================================================================
-#|
 #| File Name:
 #| change_product_pwds.sh
 #|
@@ -18,9 +16,10 @@
 #| Change History:
 #|
 #| 2025-10-02   0.1     Fredrik Lindkvist               Creation
-#| 2025-12-23   0.2     Fredrik Lindkvist               Prompt for apps/system passwords instead of giving them as inparameters
+#| 2025-12-23   0.2     Fredrik Lindkvist               Prompt for apps/system passwords instead of giving them as inparameters.
 #| 2025-12-26   0.3		Fredrik Lindkvist				Adding some housekeeping.
-#| 2026-01-15   0.4     Fredrik Lindkvist               Adding information about logfile and logdirectory
+#| 2026-01-15   0.4     Fredrik Lindkvist               Adding information about logfile and logdirectory.
+#| 2026-10-10   0.5     Fredrik Lindkvist               Improve Log Settings.
 #+===============================================================================================================================================
 #set -x
 
@@ -258,7 +257,6 @@ fi
 unset apps_connection_string
 unset system_connection_string
 
-# Housekeeping.
 # Many if the below has already been unset but lets just do it again though im to lazy :) to search every row once again. Doesnt hurt to have the unset twice.
 # Just dont fancy to leave trash variables behind.
 unset NEWPWD
