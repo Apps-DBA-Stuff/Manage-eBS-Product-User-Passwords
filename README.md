@@ -5,6 +5,7 @@ When Oracle E-Business Suite is installed, all product schema passwords default 
 Oracle provides two tools for password management: the legacy FNDCPASS command and the newer AFPASSWD command. Both can perform mass password updates, but they set the same password for all product users, which may violate security policies and is not recommended for production use. While AFPASSWD can run from either the middle tier or database tier, it has only been tested from the middle tier.
 Manually changing passwords for each product schema individually is time-consuming and tedious. To address this challenge, these scripts automate the mass password update process while generating unique, secure 12-character passwords for each product user. This approach combines the efficiency of automation with proper security practices by ensuring every schema has a different password.
 
+
 ## Overview
 
 Written for Linux (only tested on OEL8)
@@ -17,11 +18,28 @@ The toolkit includes the below files scripts:
 4. set_default_product_pwds.sh    # Shell script resetting the password for all eBS product accounts to default if needed.
 
 
-To  create a directory and place the files in the repo in the newly created directory. Source the eBS environment.
+Create a directory and place the files in the repo in the newly created directory. Source the eBS environment.
 1. run change_product_pwds.sh to set new passwords for all ebs Products users.
 2. run set_default_product_pwds.sh to set all the passwords back to defa ult.
 
-The script pwdgen can also be used standalone. $TWO_TASK needs to be set for the script to work. It can then be used just go as a simple password generator.
+The script pwdgen can also be used standalone. $TWO_TASK needs to be set for pwdgen to work Standalone. It can then be used just go as a simple password generator.
+## Scope and limitations
+
+`pwdgen` can be used standalone to generate passwords for any account.
+
+`change_product_pwds.sh` and `set_default_product_pwds.sh` are **only** for
+Oracle EBS product schemas (GL, AR, AP, PO, INV, WMS etc.) as listed in
+`products.txt`. Do **not** use them for:
+
+- APPS, APPLSYS or APPS_NE: change these with `FNDCPASS ... SYSTEM APPLSYS`
+  or `AFPASSWD -a`, followed by AutoConfig.
+- SYSADMIN or other application (FND) users.
+- SYS, SYSTEM or other database administration accounts.
+
+Note that `set_default_product_pwds.sh` resets every product schema to its
+default password, which is the same as the username (e.g. GL/GL). Only use it
+in non-production environments or when you need to restore the default state.
+
 ## Installation
 
 - Create a directory for the scripts in the location of choice.
