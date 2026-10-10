@@ -212,7 +212,6 @@ fi
 unset apps_connection_string
 unset system_connection_string
 
-# Housekeeping.
 # Many if the below has already been unset but lets just do it again though im to lazy :) to search every row once again. Doesnt hurt to have the unset twice.
 # Just dont fancy to leave trash variables behind.
 unset NEWPWD
