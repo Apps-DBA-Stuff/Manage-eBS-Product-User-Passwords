@@ -1,7 +1,5 @@
 #!/bin/bash
-#|
 #+====================================================================================================================================
-#|
 #| File Name:
 #| pwdgen
 #|
@@ -20,6 +18,7 @@
 #| Change History:
 #| 2025-10-02   0.1     Fredrik Lindkvist               Creation
 #| 2025-10-30   0.2     Fredrik Lindkvist               Adding possibility to specify password length.
+#| 2025-10-10   0.3     Fredrik Lindkvist               Some improvements
 #+======================================================================================================================================
 #set -x
 
@@ -60,8 +59,6 @@ else
     PASSWORD_LENGTH=12
     USERNAME="${1^^}"
 fi
-
-
 
 # Set password length (default to 12 if not provided or if $1 is not a number)
 #PASSWORD_LENGTH="${1:-12}"
