@@ -39,11 +39,12 @@ chmod +x set_default_product_pwds.sh
 
 -- While designed for EBS, the pwdgen script can be used standalone to generate random passwords between 12 and 64 characters for any installation (default 12 characters). For standalone use, simply set the $TWO_TASK environment variable to any value before running.
 
-./pwdgen [LENGTH : 12 DEFAULT] USERNAME
+./pwdgen USERNAME [LENGTH]
 
 
 ### Change All Product Passwords to Random Values
 
+-- See to that tbe eBS Environment has been sourced before using.
 ./change_product_pwds.sh
 
 This script will:
@@ -52,6 +53,7 @@ This script will:
 - Producing a logfile with information.
 
 ### Reset All Product Passwords to Defaults
+
 -- See to that tbe eBS Environment has been sourced before using.
 ./set_default_product_pwds.sh
 
